@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Chocolate — Digital Experience Demo
 
-## Getting Started
-
-First, run the development server:
+Интерактивное демо цифровой экосистемы для кондитерской **Chocolate** (Самарканд):
+сайт + мобильное приложение + программа лояльности + панель управления.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # прод-сборка, 101 страница
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Сценарий показа клиенту (18–20 минут)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| # | Экран | Что говорим |
+|---|-------|-------------|
+| 1 | `/` | Первое впечатление. Hero, витрина, **баланс Chocolate Club прямо в шапке** |
+| 2 | `/` блок «Для вас» | Сайт узнаёт клиента: повтор заказа, прогресс уровня, день рождения |
+| 3 | `/catalog` | 254 реальные позиции, 13 категорий, фильтры и сортировка |
+| 4 | `/product/tort-dolche-vita-2` | Карточка товара: размеры, состав, КБЖУ, «+595 баллов за заказ» |
+| 5 | корзина (drawer) | Апсейл, баллы за заказ, переход к оформлению |
+| 6 | `/checkout` | Доставка/самовывоз → филиал → время → оплата → списание баллов |
+| 7 | `/checkout/success` | Баллы начислены, прогресс до следующего уровня вырос |
+| 8 | `/loyalty` | **Ключевой экран.** Механика клуба, три уровня, каталог наград |
+| 9 | `/account/loyalty` | Личный кабинет: баланс, обмен баллов, история, промокоды |
+| 10 | `/account/orders` | История и повтор заказа в один клик |
+| 11 | `/promotions` | Сезонные, комбо, лимитированные и персональные акции |
+| 12 | `/branches` | 9 реальных филиалов, карта, маршрут |
+| 13 | `/app` | **Кликабельное мобильное приложение** — 14 экранов в рамке телефона |
+| 14 | `/admin` | Панель управления: «за витриной работает единая система» |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Что реально работает (mock-state, без бэкенда)
 
-## Learn More
+- корзина, количество, удаление, drawer, toast-уведомления
+- избранное (сердечко) — синхронно на всех страницах
+- промокоды: `SARDOR20`, `CLUB10`, `SWEET15`
+- списание баллов при оформлении (до 50% заказа)
+- оформление заказа → заказ появляется в истории, баллы начисляются
+- повтор заказа из истории и с главной
+- обмен баллов на награды (баланс уменьшается)
+- поиск по каталогу, фильтры, сортировка
+- мобильное приложение: полный путь welcome → заказ → оплата → лояльность
 
-To learn more about Next.js, take a look at the following resources:
+Состояние хранится в `localStorage` (`chocolate-demo-v1`). Чтобы сбросить демо —
+очистите localStorage или откройте приватное окно.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Данные
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Всё взято с реального сайта Chocolate (`chocolatebakery.uz`):
 
-## Deploy on Vercel
+- **254 товара** — названия, описания (RU/EN), цены в сумах
+- **275 фотографий** — оригинальная продуктовая съёмка бренда (`public/products/`)
+- **13 категорий** — реальная структура каталога
+- **9 филиалов** — адреса и GPS-координаты Самарканда
+- телефон, соцсети, юрлицо
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Демонстрационное (mock): пользователь Сардор, история заказов, акции,
+цифры в админке, механика Chocolate Club.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Chocolate Club — механика
+
+Собственная механика, не копия конкурента.
+
+- **Валюта:** Chocolate Points. 1 балл = 100 сум при оплате
+- **Начисление:** кэшбэк баллами, ставка зависит от уровня
+- **Уровни** (по баллам за 12 месяцев) — путь какао-боба:
+
+| Уровень | Порог | Кэшбэк | Ключевое |
+|---------|-------|--------|----------|
+| **COCOA** | сразу | 5% | подарок на день рождения |
+| **PRALINE** | 500 | 7% | бесплатная доставка от 150 000, ранний доступ к новинкам |
+| **TRUFFLE** | 2 000 | 10% | бесплатная доставка всегда, персональный кондитер, дегустации |
+
+Цвета уровней повторяют степень обжарки какао: светлое золото → обжиг → тёмный трюфель.
+
+Дополнительно: QR-начисление на кассе филиала, реферальная программа,
+двойные баллы по выходным, автоматический birthday-подарок.
+
+## Стек
+
+Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · lucide-react.
+Бэкенда нет — состояние в React Context + localStorage.
+
+## Структура
+
+```
+app/
+  (site)/          сайт: главная, каталог, товар, корзина, checkout,
+                   лояльность, акции, филиалы, о бренде, контакты, аккаунт
+  app/             мобильное приложение (демо в рамке телефона)
+  admin/           панель управления
+  prototype/home/  ТРИ UI-направления (?variant=A|B|C) — первоисточник решения
+components/        site/ ui/ home/ catalog/ product/ account/ loyalty/ app/
+lib/               catalog.ts, loyalty.ts, demo.ts, store.tsx, data/catalog.json
+```
+
+Выбор визуального направления и обоснование — в [PROTOTYPE-VERDICT.md](PROTOTYPE-VERDICT.md).

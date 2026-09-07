@@ -1,26 +1,152 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ============================================================
+   CHOCOLATE — DESIGN SYSTEM
+   Palette derived from the real Chocolate brand config
+   (primary rgb(168,35,62)) + warm bakery neutrals.
+   ============================================================ */
+
+@theme {
+  /* ink / neutrals — warm, never pure grey */
+  --color-ink: #1c1310;
+  --color-ink-2: #3b2c25;
+  --color-ink-3: #6d5b51;
+  --color-ink-4: #9c8b80;
+
+  --color-cream: #f8f3ec;
+  --color-cream-2: #f1e9dd;
+  --color-cream-3: #e6dacb;
+  --color-line: #e0d3c2;
+  --color-paper: #ffffff;
+
+  /* brand */
+  --color-wine: #a8233e;
+  --color-wine-dark: #85182f;
+  --color-wine-light: #d45f79;
+  --color-caramel: #b8813f;
+  --color-caramel-light: #e0b076;
+  --color-sage: #7c8a6b;
+
+  /* tiers */
+  --color-cocoa: #b8813f;
+  --color-praline: #a8233e;
+  --color-truffle: #1c1310;
+
+  --font-serif: var(--font-display), "Playfair Display", Georgia, serif;
+  --font-sans: var(--font-body), "Onest", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 4px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+/* ---------- typography helpers ---------- */
+.display {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+.display-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+.eyebrow {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+}
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- scrollbars ---------- */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.thin-scroll::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-line);
+  border-radius: 999px;
+}
+
+/* ---------- focus ---------- */
+:focus-visible {
+  outline: 2px solid var(--color-wine);
+  outline-offset: 2px;
+}
+
+/* ---------- image reveal ---------- */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.fade-up {
+  animation: fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* marquee for the ticker strip */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee 38s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* hide native number input spinners */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
